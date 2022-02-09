@@ -1,0 +1,29 @@
+.button {
+  padding: 5px 10px;
+  color: beige;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 150ms ease-in-out;
+}
+
+.button:hover {
+  transform: scale(1.2);
+}
+
+.button:not(:last-child) {
+  margin-right: 15px;
+}
+
+.button__green {
+  composes: button;
+  background-color: olivedrab;
+}
+.button__grey {
+  composes: button;
+  background-color: lightslategrey;
+}
+.button__red {
+  composes: button;
+  background-color: darkred;
+}
