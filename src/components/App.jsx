@@ -1,82 +1,66 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import Statistics from './Statistics';
 import Section from './Section';
 import FeedbackOptions from './FeedbackOptions';
 import Notification from './Notification';
 
-export default class App extends Component {
-  state = {
-    goodAmount: 0,
-    neutralAmount: 0,
-    badAmount: 0,
-  };
+export default function App() {
+  const [goodAmount, setGoodAmount] = useState(0);
+  const [neutralAmount, setNeutralAmount] = useState(0);
+  const [badAmount, setBadAmount] = useState(0);
 
-  getTotalFeedback = () => {
-    const { goodAmount, neutralAmount, badAmount } = this.state;
+  const options = ['good', 'neutral', 'bad'];
+
+  function onLeaveFeedback(option) {
+    switch (option) {
+      case 'good':
+        setGoodAmount(v => v + 1);
+        break;
+
+      case 'neutral':
+        setNeutralAmount(v => v + 1);
+        break;
+
+      case 'bad':
+        setBadAmount(v => v + 1);
+        break;
+
+      default:
+    }
+  }
+
+  function getTotalFeedback() {
     return goodAmount + neutralAmount + badAmount;
-  };
-  getPositivePercentage = () => {
-    const { goodAmount } = this.state;
-    const total = this.getTotalFeedback();
+  }
+
+  function getPositivePercentage() {
+    const total = getTotalFeedback();
 
     if (total) {
       return Math.round((goodAmount * 100) / total);
     }
 
     return 100;
-  };
-  onLeaveFeedback = option => {
-    switch (option) {
-      case 'good':
-        this.setState(prevState => ({
-          goodAmount: prevState.goodAmount + 1,
-        }));
-        break;
-
-      case 'neutral':
-        this.setState(prevState => ({
-          neutralAmount: prevState.neutralAmount + 1,
-        }));
-        break;
-
-      case 'bad':
-        this.setState(prevState => ({
-          badAmount: prevState.badAmount + 1,
-        }));
-        break;
-
-      default:
-    }
-  };
-
-  render() {
-    const { goodAmount, neutralAmount, badAmount } = this.state;
-    const totalFeedback = this.getTotalFeedback();
-    const positivePercentage = this.getPositivePercentage();
-    const options = { good: 'good', neutral: 'neutral', bad: 'bad' };
-
-    return (
-      <>
-        <Section title="Please leave feedback">
-          <FeedbackOptions
-            options={options}
-            onLeaveFeedback={this.onLeaveFeedback}
-          />
-        </Section>
-        <Section title="Statistics">
-          {totalFeedback ? (
-            <Statistics
-              good={goodAmount}
-              neutral={neutralAmount}
-              bad={badAmount}
-              total={totalFeedback}
-              positivePercentage={positivePercentage}
-            />
-          ) : (
-            <Notification message="There is no feedback"></Notification>
-          )}
-        </Section>
-      </>
-    );
   }
+
+  return (
+    <>
+      <Section title="Please leave feedback">
+        <FeedbackOptions options={options} onLeaveFeedback={onLeaveFeedback} />
+      </Section>
+      <Section title="Statistics">
+        {getTotalFeedback() ? (
+          <Statistics
+            good={goodAmount}
+            neutral={neutralAmount}
+            bad={badAmount}
+            total={getTotalFeedback()}
+            positivePercentage={getPositivePercentage()}
+          />
+        ) : (
+          <Notification message="There is no feedback"></Notification>
+        )}
+      </Section>
+    </>
+  );
 }

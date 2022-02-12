@@ -1,44 +1,30 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import s from './FeedbackOptions.module.css';
+import classNames from 'classnames/bind';
+import styles from './FeedbackOptions.module.css';
 
-export default class FeedbackOptions extends Component {
-  static propTypes = {
-    options: PropTypes.shape({
-      good: PropTypes.string,
-      neutral: PropTypes.string,
-      bad: PropTypes.string,
-    }),
-    onLeaveFeedback: PropTypes.func,
-  };
-  render() {
-    const { options, onLeaveFeedback } = this.props;
-    const { good, neutral, bad } = options;
+const cx = classNames.bind(styles);
 
-    return (
-      <div>
-        <button
-          className={s.button__green}
-          onClick={() => onLeaveFeedback(good)}
-          type="button"
-        >
-          Good
-        </button>
-        <button
-          className={s.button__grey}
-          onClick={() => onLeaveFeedback(neutral)}
-          type="button"
-        >
-          Neutral
-        </button>
-        <button
-          className={s.button__red}
-          onClick={() => onLeaveFeedback(bad)}
-          type="button"
-        >
-          Bad
-        </button>
-      </div>
-    );
-  }
+export default function FeedbackOptions({ options, onLeaveFeedback }) {
+  return (
+    <div>
+      {options.map(opt => {
+        const className = cx('button', `button__${opt}`);
+        return (
+          <button
+            className={className}
+            key={opt}
+            onClick={() => onLeaveFeedback(opt)}
+            type="button"
+          >
+            {opt}
+          </button>
+        );
+      })}
+    </div>
+  );
 }
+
+FeedbackOptions.propTypes = {
+  options: PropTypes.arrayOf(PropTypes.string),
+  onLeaveFeedback: PropTypes.func,
+};

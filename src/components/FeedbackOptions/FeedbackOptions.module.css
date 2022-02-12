@@ -15,15 +15,12 @@
   margin-right: 15px;
 }
 
-.button__green {
-  composes: button;
+.button__good {
   background-color: olivedrab;
 }
-.button__grey {
-  composes: button;
+.button__neutral {
   background-color: lightslategrey;
 }
-.button__red {
-  composes: button;
+.button__bad {
   background-color: darkred;
 }
